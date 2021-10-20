@@ -1,6 +1,6 @@
 <script>
 	import { onMount, setContext } from "svelte";
-	import mapbox from "mapbox-gl";
+	import mapbox from "./lib/mapbox-gl@1.13.2.js"; // Mapbox source code is bundled due to versioning issues
 
 	export let map;
 	export let id = "map";
@@ -48,7 +48,7 @@
 	onMount(() => {
 		const link = document.createElement("link");
 		link.rel = "stylesheet";
-		link.href = "https://unpkg.com/mapbox-gl@1.x/dist/mapbox-gl.css";
+		link.href = "https://unpkg.com/mapbox-gl@1.13.2/dist/mapbox-gl.css";
 
 		link.onload = () => {
 			map = new mapbox.Map({

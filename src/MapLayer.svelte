@@ -9,9 +9,10 @@
 	export let layout = {};
 	export let paint = {};
 	export let data = null;
-	export let colorCode = "color";
-	export let nameCode = null;
-	export let valueCode = null;
+	export let colorKey = "color";
+	export let nameKey = null;
+	export let valueKey = null;
+	export let idKey = null;
 	export let click = false;
 	export let ignoreClick = false;
 	export let clickCenter = false;
@@ -24,10 +25,14 @@
 	export let order = null;
 	export let maxzoom = null;
 	export let minzoom = null;
+	export let sourceLayer = null;
 	
-	const { source, sourceLayer, geoCode } = getContext('source');
+	const { source, layer, promoteId } = getContext('source');
 	const { getMap } = getContext('map');
 	const map = getMap();
+
+	idKey = !idKey ? promoteId : null;
+	sourceLayer = !sourceLayer ? layer : null;
 	
 	let selectedPrev = null;
 	let hoveredPrev = null;
@@ -70,16 +75,16 @@
 			map.setFeatureState({
 				source: source,
 				sourceLayer: sourceLayer,
-				id: d[geoCode]
+				id: d[idKey]
 			}, {
-				color: colorCode ? d[colorCode] : null,
-				name: nameCode ? d[nameCode] : null,
-				value: valueCode ? d[valueCode] : null
+				color: colorKey ? d[colorKey] : null,
+				name: nameKey ? d[nameKey] : null,
+				value: valueKey ? d[valueKey] : null
 			});
 		});
 	}
 
-	$: data && (data || colorCode) && updateColors();
+	$: data && (data || colorKey) && updateColors();
 
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
 	$: if (highlight && highlighted != highlightedPrev) {

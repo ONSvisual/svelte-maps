@@ -18,8 +18,8 @@
 
 	setContext("source", {
 		source: id,
-		sourceLayer: layer,
-		geoCode: promoteId
+		layer: layer,
+		promoteId: promoteId
 	});
 	
 	if (map.getSource(id)) {
