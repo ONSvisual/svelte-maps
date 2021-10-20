@@ -31,8 +31,8 @@
 	const { getMap } = getContext('map');
 	const map = getMap();
 
-	idKey = !idKey ? promoteId : null;
-	sourceLayer = !sourceLayer ? layer : null;
+	idKey = idKey ? idKey : promoteId;
+	sourceLayer = sourceLayer ? sourceLayer : layer;
 	
 	let selectedPrev = null;
 	let hoveredPrev = null;
