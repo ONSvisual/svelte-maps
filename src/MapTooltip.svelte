@@ -15,7 +15,7 @@
 	const map = getMap();
   const hoverObj = getContext('hover');
 
-  function updateTooltip(obj) {
+  function updateTooltip(obj, content) {
     if (obj.code) {
       tooltip
 			.setLngLat(obj.event.lngLat)
@@ -26,7 +26,7 @@
     }
   }
 
-  $: updateTooltip($hoverObj);
+  $: updateTooltip($hoverObj, content);
 </script>
 
 <style>
