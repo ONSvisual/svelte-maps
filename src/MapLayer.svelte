@@ -1,5 +1,6 @@
 <script>
-	import { getContext, createEventDispatcher } from 'svelte';
+	import { getContext, setContext, createEventDispatcher } from 'svelte';
+	import { writable } from 'svelte/store';
 
 	const dispatch = createEventDispatcher();
 	
@@ -13,7 +14,7 @@
 	export let nameKey = null;
 	export let valueKey = null;
 	export let idKey = null;
-	export let click = false;
+	export let select = false;
 	export let ignoreClick = false;
 	export let clickCenter = false;
 	export let selected = null;
@@ -30,6 +31,17 @@
 	const { source, layer, promoteId } = getContext('source');
 	const { getMap } = getContext('map');
 	const map = getMap();
+
+	setContext("layer", {
+		layer: id
+	});
+
+	const hoverObj = writable({
+		code: null,
+		feature: null,
+		event: null
+	});
+	setContext("hover", hoverObj);
 
 	idKey = idKey ? idKey : promoteId;
 	sourceLayer = sourceLayer ? sourceLayer : layer;
@@ -111,8 +123,8 @@
 		}
 	}
 	
-	// Adds a click event to change the selected geo code (if click = true for map layer)
-	if (click) {
+	// Adds a click event to change the selected geo code (if select = true for map layer)
+	if (select) {
 		map.on('click', id, (e) => {
       if (e.features.length > 0 && !ignoreClick) {
 				let feature = e.features[0];
@@ -149,7 +161,7 @@
 	}
 	
 	// Updates the selected geo code if it is changed elsewhere in the app (outside of this component)
-	$: if (click && selected != selectedPrev) {
+	$: if (select && selected != selectedPrev) {
 		if (selectedPrev) {
 			map.setFeatureState(
 				{ source: source, sourceLayer: sourceLayer, id: selectedPrev },
@@ -177,12 +189,14 @@
         }
 				let feature = e.features[0];
 				hovered = hoveredPrev = feature.id;
-				
-				dispatch('hover', {
+
+				hoverObj.set({
 					code: hovered,
 					feature: feature,
 					event: e
 				});
+
+				dispatch('hover', $hoverObj);
 
         map.setFeatureState(
           { source: source, sourceLayer: sourceLayer, id: hovered },
@@ -203,11 +217,13 @@
       }
 			hovered = hoveredPrev = null;
 
-			dispatch('hover', {
-				code: hovered,
+			hoverObj.set({
+				code: null,
 				feature: null,
 				event: e
 			});
+
+			dispatch('hover', $hoverObj);
 			
 			// Reset cursor and remove popup
 			map.getCanvas().style.cursor = '';
@@ -232,3 +248,7 @@
 	}
 	
 </script>
+
+{#if hover}
+<slot></slot>
+{/if}

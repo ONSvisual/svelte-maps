@@ -1,6 +1,8 @@
 <script>
 	import { onMount, setContext } from "svelte";
-	import mapbox from "./lib/mapbox-gl@1.13.2.js"; // Mapbox source code is bundled due to versioning issues
+	import mapbox from "./lib/mapbox-gl@1.13.2";
+	// Mapbox source code is bundled due to versioning & ES6 import issues
+	// https://cdn.skypack.dev/-/mapbox-gl@v1.13.2-asizChmwkQobquJNQjgb/dist=es2020,mode=imports,min/optimized/mapbox-gl.js
 
 	export let map;
 	export let id = "map";

@@ -4,6 +4,7 @@
 	import Map from './Map.svelte';
 	import MapSource from './MapSource.svelte';
 	import MapLayer from './MapLayer.svelte';
+	import MapTooltip from './MapTooltip.svelte';
 	
 	const colors = {
 		seq5: ['rgb(234, 236, 177)', 'rgb(169, 216, 145)', 'rgb(0, 167, 186)', 'rgb(0, 78, 166)', 'rgb(0, 13, 84)'],
@@ -138,7 +139,7 @@
 					  	type="fill"
 					  	hover={true}
 					  	bind:hovered
-					  	click={true}
+					  	select={true}
 					  	bind:selected
 					  	paint={{
 					  		'fill-color': ['case',
@@ -147,7 +148,9 @@
 					  		],
 					  		'fill-opacity': 0.7
 				  		}}
-				    />
+				    >
+						  <MapTooltip content={`Code: ${hovered}`}/>
+						</MapLayer>
 				  	<MapLayer
 				  		id="pcon-line"
 				  		type="line"
@@ -162,18 +165,18 @@
 				  				1
 				  			]
 				  		}}
-				    />
+						/>
 				  </MapSource>
 			  </Map>
 			  {/if}
 			</div>
 			Geojson choropleth map with hover and select<br/>
 			(hovered: {hovered ? hovered : ''},
-			selected: {#if selected} {selected} <a on:click|preventDefault={() => selected = null}>x</a>{/if})
+			selected: {#if selected} {selected} <button on:click|preventDefault={() => selected = null}>x</button>{/if})
 		</div>
 		<div>
 			<div class="map">
-			  <Map id="map4" style="./data/style-osm-grey.json" location={{lng: -2, lat: 52, zoom: 8}} bind:map={map4} controls={true} minzoom={5}>
+			  <Map id="map4" style="./data/style-ons-light.json" location={{lng: -2, lat: 52, zoom: 8}} bind:map={map4} controls={true} minzoom={5}>
 			    <MapSource
 				  	id="lsoa"
 				  	type="vector"
@@ -192,14 +195,15 @@
 				  				['!=', ['feature-state', 'color'], null], ['feature-state', 'color'],
 				  				'rgba(255, 255, 255, 0)'
 				  			],
-				  			'fill-opacity': 0.5
+				  			'fill-opacity': 0.8
 				  		}}
+							order="water_name"
 				    />
 				  	{/if}
 			  	</MapSource>
 			  </Map>
 			</div>
-			Choropleth map using custom vector tiles
+			Choropleth map using custom vector boundary tiles and OpenMapTiles basemap
 		</div>
   </div>
 </section>
@@ -236,6 +240,10 @@
 	  margin: 0;
 		margin-bottom: 20px;
 	  padding: 0;
+	}
+	button {
+		padding: 0 2px;
+		cursor: pointer;
 	}
 	.wrapper {
 		width: 100%;
