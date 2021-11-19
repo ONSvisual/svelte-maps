@@ -24,6 +24,7 @@
 
 	export let zoom = null;
 	export let center = null;
+	export let interactive = true;
 
 	let container;
 	let w;
@@ -55,9 +56,10 @@
 		link.onload = () => {
 			map = new mapbox.Map({
 				container,
-				style: style,
+				style,
 				minZoom: minzoom,
 				maxZoom: maxzoom,
+				interactive,
 				...options,
 			});
 			
