@@ -37,7 +37,7 @@
 	});
 
 	const hoverObj = writable({
-		code: null,
+		id: null,
 		feature: null,
 		event: null
 	});
@@ -131,7 +131,7 @@
 				selected = feature.id;
 
 				dispatch('select', {
-					code: selected,
+					id: selected,
 					feature: feature,
 					event: e
 				});
@@ -191,7 +191,7 @@
 				hovered = hoveredPrev = feature.id;
 
 				hoverObj.set({
-					code: hovered,
+					id: hovered,
 					feature: feature,
 					event: e
 				});
@@ -218,7 +218,7 @@
 			hovered = hoveredPrev = null;
 
 			hoverObj.set({
-				code: null,
+				id: null,
 				feature: null,
 				event: e
 			});

@@ -16,10 +16,10 @@
   const hoverObj = getContext('hover');
 
   function updateTooltip(obj, content) {
-    if (obj.code) {
+    if (obj.id) {
       tooltip
 			.setLngLat(obj.event.lngLat)
-      .setHTML(content ? content : '')
+      .setHTML(content ? content : obj.code)
       .addTo(map);
     } else {
       tooltip.remove();
