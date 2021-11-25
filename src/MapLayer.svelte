@@ -15,7 +15,7 @@
 	export let valueKey = null;
 	export let idKey = null;
 	export let select = false;
-	export let ignoreClick = false;
+	export let clickIgnore = false;
 	export let clickCenter = false;
 	export let selected = null;
 	export let hover = false;
@@ -126,7 +126,7 @@
 	// Adds a click event to change the selected geo code (if select = true for map layer)
 	if (select) {
 		map.on('click', id, (e) => {
-      if (e.features.length > 0 && !ignoreClick) {
+      if (e.features.length > 0 && !clickIgnore) {
 				let feature = e.features[0];
 				selected = feature.id;
 
