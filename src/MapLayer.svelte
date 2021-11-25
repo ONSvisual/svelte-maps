@@ -97,26 +97,26 @@
 	}
 
 	$: data && (data || colorKey) && updateColors();
-
+	
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
-	$: if (highlight && highlighted != highlightedPrev) {
+	$: if (highlight && highlighted.filter(id => !highlightedPrev.includes(id)).length == 0 && highlightedPrev.filter(id => !highlighted.includes(id)).length == 0) {
 		if (highlightedPrev[0]) {
-			highlightedPrev.forEach(code => {
+			highlightedPrev.forEach(id => {
 				let state = {};
 				state[highlightKey] = false;
 				map.setFeatureState(
-					{ source: source, sourceLayer: sourceLayer, id: code },
+					{ source, sourceLayer, id },
 					state
 				);
 			});
 		}
 		highlightedPrev = highlighted;
 		if (highlighted[0]) {
-			highlighted.forEach(code => {
+			highlighted.forEach(id => {
 				let state = {};
 				state[highlightKey] = true;
 				map.setFeatureState(
-					{ source: source, sourceLayer: sourceLayer, id: code },
+					{ source, sourceLayer, id },
 					state
 				);
 			});
