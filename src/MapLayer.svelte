@@ -99,7 +99,7 @@
 	$: data && (data || colorKey) && updateColors();
 	
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
-	$: if (highlight && highlighted.filter(id => !highlightedPrev.includes(id)).length == 0 && highlightedPrev.filter(id => !highlighted.includes(id)).length == 0) {
+	$: if (highlight && highlighted != highlightedPrev) {
 		if (highlightedPrev[0]) {
 			highlightedPrev.forEach(id => {
 				let state = {};
