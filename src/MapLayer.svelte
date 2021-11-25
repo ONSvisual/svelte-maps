@@ -250,5 +250,5 @@
 </script>
 
 {#if hover}
-<slot></slot>
+<slot {hovered}></slot>
 {/if}
