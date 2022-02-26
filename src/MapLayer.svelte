@@ -249,6 +249,4 @@
 	
 </script>
 
-{#if hover}
 <slot {hovered}></slot>
-{/if}
