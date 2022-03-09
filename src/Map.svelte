@@ -114,7 +114,7 @@
 	$: (w || h) && resizeCanvas();
 </script>
 
-<div bind:clientWidth={w} bind:clientHeight={h} bind:this={container} {id}>
+<div bind:clientWidth={w} bind:clientHeight={h} bind:this={container} {id} style:width="100%" style:height="100%">
 	{#if loaded}
 		<slot />
 	{/if}
@@ -123,9 +123,5 @@
 <style>
 	:global(.mapboxgl-control-container button) {
 		margin: 0;
-	}
-	div {
-		width: 100%;
-		height: 100%;
 	}
 </style>
