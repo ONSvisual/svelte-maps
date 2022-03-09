@@ -77,9 +77,10 @@
 				center = map.getCenter();
 				loaded = true;
 				
-				// Prevent map from being tabbable
+				// Prevent map from being tabbable + force DIV height to be 100%
 				if (!tabbable && document.querySelector(`#${id} canvas`)) {
 					document.querySelector(`#${id} canvas`).tabIndex = "-1";
+					document.querySelector(`#${id}`).height = "100%";
 				}
 			});
 
