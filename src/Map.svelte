@@ -77,10 +77,9 @@
 				center = map.getCenter();
 				loaded = true;
 				
-				// Prevent map from being tabbable + force DIV height to be 100%
+				// Prevent map from being tabbable
 				if (!tabbable && document.querySelector(`#${id} canvas`)) {
 					document.querySelector(`#${id} canvas`).tabIndex = "-1";
-					document.querySelector(`#${id}`).height = "100%";
 				}
 			});
 
@@ -115,7 +114,7 @@
 	$: (w || h) && resizeCanvas();
 </script>
 
-<div bind:clientWidth={w} bind:clientHeight={h} bind:this={container} {id} style:width="100%" style:height="100%">
+<div bind:clientWidth={w} bind:clientHeight={h} bind:this={container} {id}>
 	{#if loaded}
 		<slot />
 	{/if}
@@ -124,5 +123,9 @@
 <style>
 	:global(.mapboxgl-control-container button) {
 		margin: 0;
+	}
+	div {
+		width: 100%;
+		height: 100%;
 	}
 </style>
