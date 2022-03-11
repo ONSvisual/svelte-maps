@@ -16,6 +16,7 @@
 		"sources": {},
 		"layers": []
 	};
+	export let options = {};
 	export let minzoom = 0;
 	export let maxzoom = 14;
 	export let controls = false;
@@ -27,9 +28,7 @@
 	export let interactive = true;
 
 	let container;
-	let w;
-	let h;
-	let options;
+	let _options = {};
 	let loaded = false;
 
 	setContext("map", {
@@ -38,15 +37,14 @@
 	
 	// Interpret location
 	if (location.bounds) {
-		options = { bounds: location.bounds };
+		_options.bounds = location.bounds;
 	} else if (typeof location.lng == 'number' && typeof location.lat == 'number') {
-		options = {
-			center: [location.lng, location.lat],
-		};
+		_options.center = [location.lng, location.lat];
 		if (typeof location.zoom == 'number') {
-			options.zoom = location.zoom;
+			_options.zoom = location.zoom;
 		}
 	}
+	_options = {..._options, ...options}; // Combine core options + custom user options
 
 	onMount(() => {
 		const link = document.createElement("link");
@@ -60,7 +58,7 @@
 				minZoom: minzoom,
 				maxZoom: maxzoom,
 				interactive,
-				...options,
+				..._options,
 			});
 			
 			if (controls) {
@@ -97,24 +95,9 @@
 			link.parentNode.removeChild(link);
 		};
 	});
-
-	// Function that forces map to resize to fit parent div, in case it doesn't automatically
-	function resizeCanvas() {
-		if (loaded) {
-			let canvas = document.getElementsByClassName("mapboxgl-canvas");
-		  if (canvas[0]) {
-			  canvas[0].style.width = "100%";
-			  canvas[0].style.height = "100%";
-			  map.resize();
-		  }
-		}
-	}
-
-	// Invoke above function when parent div size changes
-	$: (w || h) && resizeCanvas();
 </script>
 
-<div bind:clientWidth={w} bind:clientHeight={h} bind:this={container} {id}>
+<div bind:this={container} {id}>
 	{#if loaded}
 		<slot />
 	{/if}
