@@ -1,5 +1,5 @@
 <script>
-	import { getContext, setContext } from 'svelte';
+	import { getContext, setContext, onDestroy } from 'svelte';
 	
 	export let id;
 	export let type;
@@ -98,6 +98,15 @@
 
 	$: loaded && data && setData();
 	
+	onDestroy(() => {
+		let layers = map.getStyle().layers;
+		layers.filter(l => l.source == id)
+		.forEach(l => {
+			map.removeLayer(l.id);
+		});
+
+		map.removeSource(id);
+	});
 </script>
 
 {#if loaded}

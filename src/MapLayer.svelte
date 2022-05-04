@@ -1,5 +1,5 @@
 <script>
-	import { getContext, setContext, createEventDispatcher } from 'svelte';
+	import { getContext, setContext, createEventDispatcher, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	const dispatch = createEventDispatcher();
@@ -27,6 +27,7 @@
 	export let maxzoom = null;
 	export let minzoom = null;
 	export let sourceLayer = null;
+	export let visible = true;
 	
 	const { source, layer, promoteId } = getContext('source');
 	const { getMap } = getContext('map');
@@ -49,10 +50,8 @@
 	let selectedPrev = null;
 	let hoveredPrev = null;
 	let highlightedPrev = [];
-	
-	if (map.getLayer(id)) {
-    map.removeLayer(id);
-	}
+
+	layout.visibility = visible ? 'visible' : 'none';
 	
 	let options = {
 		'id': id,
@@ -76,6 +75,9 @@
 		options['minzoom'] = minzoom;
 	}
 	
+	if (map.getLayer(id)) {
+    map.removeLayer(id);
+	}
 	map.addLayer(options, order);
 
 	// Updates "color" feature states for all geo codes
@@ -97,6 +99,13 @@
 	}
 
 	$: data && (data || colorKey) && updateColors();
+
+	// Function to toggl layer visibility based on "visible" prop
+	function toggleVisibility(visible) {
+		if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+	}
+
+	$: toggleVisibility(visible);
 	
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
 	$: if (highlight && highlighted != highlightedPrev) {
@@ -247,6 +256,11 @@
 		hoveredPrev = hovered;
 	}
 	
+	onDestroy(() => {
+		if (map.getLayer(id)) {
+    	map.removeLayer(id);
+		}
+	});
 </script>
 
 <slot {hovered}></slot>

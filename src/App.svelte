@@ -42,6 +42,10 @@
 	let center = {};
 	let hovered, selected;
 
+	let showSources = true;
+	let showLayers = true;
+	let visLayers = true;
+
 	// Get geometry for geojson maps
 	getTopo(pconBounds.url, pconBounds.layer)
 	.then(res => geojson = res);
@@ -81,6 +85,15 @@
     <h1>ONS Svelte Map Components</h1>
     <p>This library contains a series of components for building Mapbox GL JS v1 maps within Svelte apps. They are primarily built with data visualisation use cases in mind, and generally assume the use of self-hosted map tiles and/or geojson sources.</p>
 		<p>Below are a series of examples of how to use the components to display maps. View the source code of the <a href="https://github.com/ONSvisual/svelte-maps/blob/main/src/App.svelte">App.svelte</a> file in this repository to see how they are used.</p>
+		<p>
+			Create/destroy:
+			<label><input type="checkbox" bind:checked={showSources}/> Sources</label>
+			<label><input type="checkbox" bind:checked={showLayers}/> Layers</label>
+		</p>
+		<p>
+			Show/hide:
+			<label><input type="checkbox" bind:checked={visLayers}/> Layers</label>
+		</p>
   </div>
 </section>
 
@@ -99,12 +112,14 @@
 			<div class="map">
 			  {#if geojson && data.pcon}
 			  <Map id="map2" style="./data/style-osm-grey.json" location={{bounds: bounds.uk}} bind:map={map2} controls={true}>
+					{#if showSources}
 				  <MapSource
 					  id="pcon"
 					  type="geojson"
 					  data={geojson}
 					  promoteId={pconBounds.code}
 					  maxzoom={13}>
+						{#if showLayers}
 					  <MapLayer
 					  	id="pcon"
 					  	data={data.pcon}
@@ -116,8 +131,11 @@
 					  		],
 					  		'fill-opacity': 0.7
 					  	}}
+							visible={visLayers}
 				    />
+						{/if}
 				  </MapSource>
+					{/if}
 			  </Map>
 			  {/if}
 			</div>
@@ -127,12 +145,14 @@
 			<div class="map">
 			  {#if geojson && data.pcon}
 			  <Map id="map3" style="./data/style-osm-grey.json" location={{bounds: bounds.uk}} bind:map={map3} controls={true}>
+					{#if showSources}
 			  	<MapSource
 					  id="pcon"
 					  type="geojson"
 					  data={geojson}
 					  promoteId={pconBounds.code}
 					  maxzoom={13}>
+						{#if showLayers}
 					  <MapLayer
 					  	id="pcon-fill"
 					  	data={data.pcon}
@@ -148,6 +168,7 @@
 					  		],
 					  		'fill-opacity': 0.7
 				  		}}
+							visible={visLayers}
 				    >
 						  <MapTooltip content={`Code: ${hovered}`}/>
 						</MapLayer>
@@ -165,8 +186,11 @@
 				  				1
 				  			]
 				  		}}
+							visible={visLayers}
 						/>
+						{/if}
 				  </MapSource>
+					{/if}
 			  </Map>
 			  {/if}
 			</div>
@@ -177,6 +201,7 @@
 		<div>
 			<div class="map">
 			  <Map id="map4" style="./data/style-ons-light.json" location={{lng: -2, lat: 52, zoom: 8}} bind:map={map4} controls={true} minzoom={5}>
+					{#if showSources}
 			    <MapSource
 				  	id="lsoa"
 				  	type="vector"
@@ -184,7 +209,7 @@
 				  	layer={lsoaBounds.layer}
 				  	promoteId={lsoaBounds.code}
 				  	maxzoom={13}>
-				  	{#if data}
+				  	{#if showLayers && data}
 				  	<MapLayer
 				  		id="lsoa"
 				  		data={data.lsoa}
@@ -198,9 +223,11 @@
 				  			'fill-opacity': 0.8
 				  		}}
 							order="water_name"
+							visible={visLayers}
 				    />
 				  	{/if}
 			  	</MapSource>
+					{/if}
 			  </Map>
 			</div>
 			Choropleth map using custom vector boundary tiles and OpenMapTiles basemap
@@ -244,6 +271,10 @@
 	button {
 		padding: 0 2px;
 		cursor: pointer;
+	}
+	label {
+		display: inline;
+		margin-left: 6px;
 	}
 	.wrapper {
 		width: 100%;
