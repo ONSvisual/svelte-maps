@@ -1,8 +1,10 @@
 <script>
-	import { onMount, setContext } from "svelte";
+	import { setContext, createEventDispatcher, onDestroy } from "svelte";
 	import mapbox from "./lib/mapbox-gl@1.13.2";
 	// Mapbox source code is bundled due to versioning & ES6 import issues
 	// https://cdn.skypack.dev/-/mapbox-gl@v1.13.2-asizChmwkQobquJNQjgb/dist=es2020,mode=imports,min/optimized/mapbox-gl.js
+
+	const dispatch = createEventDispatcher();
 
 	export let map;
 	export let id = "map";
@@ -46,56 +48,59 @@
 	}
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
-	onMount(() => {
-		const link = document.createElement("link");
-		link.rel = "stylesheet";
-		link.href = "https://unpkg.com/mapbox-gl@1.13.2/dist/mapbox-gl.css";
-
-		link.onload = () => {
-			map = new mapbox.Map({
-				container,
-				style,
-				minZoom: minzoom,
-				maxZoom: maxzoom,
-				interactive,
-				..._options,
-			});
+	function load() {
+		map = new mapbox.Map({
+			container,
+			style,
+			minZoom: minzoom,
+			maxZoom: maxzoom,
+			interactive,
+			..._options,
+		});
+		
+		if (controls) {
+			map.addControl(new mapbox.NavigationControl({showCompass: false}));
+		}
+		
+		if (locate) {
+			map.addControl(new mapbox.GeolocateControl());
+		}
+		
+		// Get initial zoom level
+		map.on("load", (e) => {
+			zoom = map.getZoom();
+			center = map.getCenter();
+			loaded = true;
 			
-			if (controls) {
-				map.addControl(new mapbox.NavigationControl({showCompass: false}));
+			// Prevent map from being tabbable
+			if (!tabbable && document.querySelector(`#${id} canvas`)) {
+				document.querySelector(`#${id} canvas`).tabIndex = "-1";
 			}
-			
-			if (locate) {
-				map.addControl(new mapbox.GeolocateControl());
-			}
-			
-			// Get initial zoom level
-			map.on("load", () => {
-				zoom = map.getZoom();
-				center = map.getCenter();
-				loaded = true;
-				
-				// Prevent map from being tabbable
-				if (!tabbable && document.querySelector(`#${id} canvas`)) {
-					document.querySelector(`#${id} canvas`).tabIndex = "-1";
-				}
+
+			dispatch("load", {
+				event: e
 			});
+		});
 
-			// Update zoom level and center when the view changes
-			map.on("moveend", () => {
-				zoom = map.getZoom();
-				center = map.getCenter();
-			});
-		};
+		// Update zoom level and center when the view changes
+		map.on("moveend", (e) => {
+			zoom = map.getZoom();
+			center = map.getCenter();
+		});
+	};
 
-		document.head.appendChild(link);
-
-		return () => {
-			map.remove();
-			link.parentNode.removeChild(link);
-		};
+	onDestroy(() => {
+		if (map) map.remove();
 	});
 </script>
+
+<svelte:head>
+	<link
+		rel="stylesheet"
+		href="https://unpkg.com/mapbox-gl@1.13.2/dist/mapbox-gl.css"
+		on:load={load}
+	/>
+</svelte:head>
 
 <div bind:this={container} {id}>
 	{#if loaded}
