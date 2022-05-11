@@ -1,8 +1,6 @@
 <script>
 	import { setContext, createEventDispatcher, onDestroy } from "svelte";
-	import mapbox from "./lib/mapbox-gl@1.13.2";
-	// Mapbox source code is bundled due to versioning & ES6 import issues
-	// https://cdn.skypack.dev/-/mapbox-gl@v1.13.2-asizChmwkQobquJNQjgb/dist=es2020,mode=imports,min/optimized/mapbox-gl.js
+	import maplibre from "maplibre-gl";
 
 	const dispatch = createEventDispatcher();
 
@@ -16,8 +14,14 @@
 	export let style = {
 		"version": 8,
 		"sources": {},
-		"layers": []
-	};
+		"layers": [
+			{
+				"id": "background",
+				"type": "background",
+				"paint": {"background-color": "lightgrey"}
+			}
+		]
+	}; // Can be a json style definition or a url
 	export let options = {};
 	export let minzoom = 0;
 	export let maxzoom = 14;
@@ -49,7 +53,7 @@
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
 	function load() {
-		map = new mapbox.Map({
+		map = new maplibre.Map({
 			container,
 			style,
 			minZoom: minzoom,
@@ -59,11 +63,11 @@
 		});
 		
 		if (controls) {
-			map.addControl(new mapbox.NavigationControl({showCompass: false}));
+			map.addControl(new maplibre.NavigationControl({showCompass: false}));
 		}
 		
 		if (locate) {
-			map.addControl(new mapbox.GeolocateControl());
+			map.addControl(new maplibre.GeolocateControl());
 		}
 		
 		// Get initial zoom level
@@ -89,6 +93,12 @@
 		});
 	};
 
+	// Function to switch map style if style prop changes
+	function setStyle(style) {
+		if (map) map.setStyle(style);
+	}
+	$: setStyle(style);
+
 	onDestroy(() => {
 		if (map) map.remove();
 	});
@@ -97,7 +107,7 @@
 <svelte:head>
 	<link
 		rel="stylesheet"
-		href="https://unpkg.com/mapbox-gl@1.13.2/dist/mapbox-gl.css"
+		href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css"
 		on:load={load}
 	/>
 </svelte:head>
@@ -109,7 +119,7 @@
 </div>
 
 <style>
-	:global(.mapboxgl-control-container button) {
+	:global(.maplibregl-control-container button) {
 		margin: 0;
 	}
 	div {

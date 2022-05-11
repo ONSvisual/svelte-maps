@@ -1,12 +1,10 @@
 <script>
   import { getContext } from 'svelte';
-  import mapbox from './lib/mapbox-gl@1.13.2';
-	// Mapbox source code is bundled due to versioning & ES6 import issues
-	// https://cdn.skypack.dev/-/mapbox-gl@v1.13.2-asizChmwkQobquJNQjgb/dist=es2020,mode=imports,min/optimized/mapbox-gl.js
+  import maplibre from 'maplibre-gl';
 
   export let content;
 
-  const tooltip = new mapbox.Popup({
+  const tooltip = new maplibre.Popup({
 		closeButton: false,
 		closeOnClick: false
 	});
@@ -30,7 +28,7 @@
 </script>
 
 <style>
-  :global(.mapboxgl-popup-content) {
+  :global(.maplibregl-popup-content) {
 		padding: 5px 10px !important;
 	}
 </style>
