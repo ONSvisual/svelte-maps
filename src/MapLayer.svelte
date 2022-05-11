@@ -80,25 +80,38 @@
 	}
 	map.addLayer(options, order);
 
-	// Updates "color" feature states for all geo codes
+	// Updates "color" feature states for all geo codes in data array
 	// Assumes that each data point has the colours defined on the colorCode key
-	function updateColors() {
+	export function updateColors(data, cKey = colorKey) {
 		console.log('updating colors...');
 
-		for (const d of data) {
-			map.setFeatureState({
-				source: source,
-				sourceLayer: sourceLayer,
-				id: d[idKey]
-			}, {
-				color: colorKey ? d[colorKey] : null,
-				name: nameKey ? d[nameKey] : null,
-				value: valueKey ? d[valueKey] : null
-			});
+		if (nameKey || valueKey) {
+			for (const d of data) {
+				map.setFeatureState({
+					source: source,
+					sourceLayer: sourceLayer,
+					id: d[idKey]
+				}, {
+					color: cKey ? d[cKey] : null,
+					name: nameKey ? d[nameKey] : null,
+					value: valueKey ? d[valueKey] : null
+				});
+			}
+		} else {
+			for (const d of data) {
+				map.setFeatureState({
+					source: source,
+					sourceLayer: sourceLayer,
+					id: d[idKey]
+				}, {
+					color: d[cKey]
+				});
+			}
 		}
+		
 	}
 
-	$: data && (data || colorKey) && updateColors();
+	$: data && updateColors(data, colorKey);
 
 	// Function to toggl layer visibility based on "visible" prop
 	function toggleVisibility(visible) {
