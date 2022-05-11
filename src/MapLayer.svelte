@@ -85,7 +85,7 @@
 	function updateColors() {
 		console.log('updating colors...');
 
-		data.forEach(d => {
+		for (const d of data) {
 			map.setFeatureState({
 				source: source,
 				sourceLayer: sourceLayer,
@@ -95,7 +95,7 @@
 				name: nameKey ? d[nameKey] : null,
 				value: valueKey ? d[valueKey] : null
 			});
-		});
+		}
 	}
 
 	$: data && (data || colorKey) && updateColors();
@@ -110,25 +110,25 @@
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
 	$: if (highlight && highlighted != highlightedPrev) {
 		if (highlightedPrev[0]) {
-			highlightedPrev.forEach(id => {
+			for (const id of highlightedPrev) {
 				let state = {};
 				state[highlightKey] = false;
 				map.setFeatureState(
 					{ source, sourceLayer, id },
 					state
 				);
-			});
+			}
 		}
 		highlightedPrev = highlighted;
 		if (highlighted[0]) {
-			highlighted.forEach(id => {
+			for (const id of highlighted) {
 				let state = {};
 				state[highlightKey] = true;
 				map.setFeatureState(
 					{ source, sourceLayer, id },
 					state
 				);
-			});
+			}
 		}
 	}
 	
