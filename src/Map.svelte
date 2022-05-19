@@ -96,6 +96,9 @@
 	// Function to switch map style if style prop changes
 	function setStyle(style) {
 		if (map) map.setStyle(style);
+		dispatch("style", {
+			style
+		});
 	}
 	$: setStyle(style);
 
