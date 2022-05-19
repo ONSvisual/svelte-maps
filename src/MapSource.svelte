@@ -99,13 +99,15 @@
 	$: loaded && data && setData();
 	
 	onDestroy(() => {
-		let layers = map.getStyle().layers;
-		layers.filter(l => l.source == id)
-		.forEach(l => {
-			map.removeLayer(l.id);
-		});
+		if (map.getSource(id)) {
+			let layers = map.getStyle().layers;
+			layers.filter(l => l.source == id)
+			.forEach(l => {
+				map.removeLayer(l.id);
+			});
 
-		map.removeSource(id);
+			map.removeSource(id);
+		}
 	});
 </script>
 
