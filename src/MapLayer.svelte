@@ -113,11 +113,16 @@
 
 	$: data && updateColors(data, colorKey);
 
-	// Function to toggl layer visibility based on "visible" prop
+	// Function to update layer filter
+	function setFilter(filter) {
+		if (map.getLayer(id)) map.setFillter(id, filter);
+	}
+	$: setFilter(filter);
+
+	// Function to toggle layer visibility based on "visible" prop
 	function toggleVisibility(visible) {
 		if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
 	}
-
 	$: toggleVisibility(visible);
 	
 	// Updates the "highlighted" feature state as geo codes are added to/removed from the highlighted array
