@@ -115,7 +115,7 @@
 
 	// Function to update layer filter
 	function setFilter(filter) {
-		if (map.getLayer(id)) map.setFillter(id, filter);
+		if (map.getLayer(id)) map.setFilter(id, filter);
 	}
 	$: setFilter(filter);
 
