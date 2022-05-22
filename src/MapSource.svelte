@@ -92,11 +92,17 @@
 
 	addSource();
 
-	function setData() {
-		map.getSource(id).setData(data);
+	function setData(data) {
+		let source = map.getSource(id);
+		if (source) source.setData(data);
 	}
+	$: type == "geojson" && loaded && setData(data);
 
-	$: loaded && data && setData();
+	function setTiles(url) {
+		let source = map.getSource(id);
+		if (source) source.setTiles([url]);
+	}
+	$: type == "vector" && loaded && setTiles(url);
 	
 	onDestroy(() => {
 		if (map.getSource(id)) {
