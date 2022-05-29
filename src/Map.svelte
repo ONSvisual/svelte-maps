@@ -116,7 +116,7 @@
 	/>
 </svelte:head>
 
-<div bind:this={container} {id}>
+<div bind:this={container} {id} class="map">
 	{#if loaded}
 		<slot />
 	{/if}
@@ -126,7 +126,7 @@
 	:global(.maplibregl-control-container button) {
 		margin: 0;
 	}
-	div {
+	.map {
 		width: 100%;
 		height: 100%;
 	}
