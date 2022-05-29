@@ -26,20 +26,20 @@
     map.removeSource(id);
 	}
 
-	function isSourceLoaded(){
+	function sleep (ms = 1000) {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	async function isSourceLoaded(){
+		await sleep(250);
+
     if (map.isSourceLoaded(id)) {
 			loaded = true;
 			console.log(id + ' map source loaded!');
     } else {
-			setTimeout(() => {
-				console.log('...');
-				isSourceLoaded();
-			}, 250);
+			console.log('...');
+			isSourceLoaded();
 		}
-	}
-
-	function sleep (ms = 1000) {
-  	return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 	
 	// Set optional source properties
@@ -109,7 +109,7 @@
 	$: type == "vector" && loaded && setTiles(url);
 	
 	onDestroy(async () => {
-		await sleep(10);
+		await sleep(50);
 
 		if (map && map.getSource(id)) {
 			let layers = map.getStyle().layers;

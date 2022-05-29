@@ -279,7 +279,7 @@
 	}
 	
 	onDestroy(async () => {
-		await sleep(10);
+		await sleep(50);
 
 		if (map && map.getLayer(id)) map.removeLayer(id);
 	});
