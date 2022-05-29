@@ -31,7 +31,7 @@
 	}
 
 	async function isSourceLoaded(){
-		await sleep(250);
+		await sleep(100);
 
     if (map.isSourceLoaded(id)) {
 			loaded = true;
