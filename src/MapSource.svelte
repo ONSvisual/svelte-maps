@@ -105,7 +105,7 @@
 	$: type == "vector" && loaded && setTiles(url);
 	
 	onDestroy(() => {
-		if (map.getSource(id)) {
+		if (map && map.getSource(id)) {
 			let layers = map.getStyle().layers;
 			layers.filter(l => l.source == id)
 			.forEach(l => {
