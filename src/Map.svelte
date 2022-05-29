@@ -87,7 +87,7 @@
 		});
 
 		// Update zoom level and center when the view changes
-		map.on("moveend", (e) => {
+		map.on("moveend", () => {
 			zoom = map.getZoom();
 			center = map.getCenter();
 		});
@@ -104,6 +104,7 @@
 
 	onDestroy(() => {
 		if (map) map.remove();
+		map = null;
 	});
 </script>
 
