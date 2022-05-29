@@ -1,5 +1,6 @@
 <script>
 	import { getContext, setContext, onDestroy } from 'svelte';
+	import { sleep } from "./js/utils";
 	
 	export let id;
 	export let type;
@@ -104,7 +105,9 @@
 	}
 	$: type == "vector" && loaded && setTiles(url);
 	
-	onDestroy(() => {
+	onDestroy(async () => {
+		await sleep(10);
+		
 		if (map && map.getSource(id)) {
 			let layers = map.getStyle().layers;
 			layers.filter(l => l.source == id)

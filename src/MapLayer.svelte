@@ -1,6 +1,7 @@
 <script>
 	import { getContext, setContext, createEventDispatcher, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
+	import { sleep } from "./js/utils";
 
 	const dispatch = createEventDispatcher();
 	
@@ -274,7 +275,9 @@
 		hoveredPrev = hovered;
 	}
 	
-	onDestroy(() => {
+	onDestroy(async () => {
+		await sleep(10);
+		
 		if (map && map.getLayer(id)) map.removeLayer(id);
 	});
 </script>
