@@ -1,5 +1,5 @@
 <script>
-	import { setContext, createEventDispatcher, onDestroy } from "svelte";
+	import { setContext, createEventDispatcher, onMount } from "svelte";
 	import maplibre from "maplibre-gl";
 
 	const dispatch = createEventDispatcher();
@@ -52,7 +52,7 @@
 	}
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
-	function load() {
+	onMount(() => {
 		map = new maplibre.Map({
 			container,
 			style,
@@ -91,7 +91,12 @@
 			zoom = map.getZoom();
 			center = map.getCenter();
 		});
-	};
+
+		return () => {
+			if (map) map.remove();
+			map = null;
+		}
+	});
 
 	// Function to switch map style if style prop changes
 	function setStyle(style) {
@@ -101,18 +106,12 @@
 		});
 	}
 	$: setStyle(style);
-
-	onDestroy(() => {
-		if (map) map.remove();
-		map = null;
-	});
 </script>
 
 <svelte:head>
 	<link
 		rel="stylesheet"
 		href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css"
-		on:load={load}
 	/>
 </svelte:head>
 
