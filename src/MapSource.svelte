@@ -1,6 +1,5 @@
 <script>
 	import { getContext, setContext, onDestroy } from 'svelte';
-	import { sleep } from "./js/utils";
 	
 	export let id;
 	export let type;
@@ -37,6 +36,10 @@
 				isSourceLoaded();
 			}, 250);
 		}
+	}
+
+	function sleep (ms = 1000) {
+  	return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 	
 	// Set optional source properties
@@ -107,7 +110,7 @@
 	
 	onDestroy(async () => {
 		await sleep(10);
-		
+
 		if (map && map.getSource(id)) {
 			let layers = map.getStyle().layers;
 			layers.filter(l => l.source == id)
