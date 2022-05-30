@@ -1,5 +1,5 @@
 <script>
-	import { setContext, createEventDispatcher, onMount } from "svelte";
+	import { setContext, createEventDispatcher, onMount, onDestroy } from "svelte";
 	import maplibre from "maplibre-gl";
 
 	const dispatch = createEventDispatcher();
@@ -40,6 +40,10 @@
 	setContext("map", {
 		getMap: () => map,
 	});
+
+	function sleep (ms = 1000) {
+  	return new Promise((resolve) => setTimeout(resolve, ms));
+	}
 	
 	// Interpret location
 	if (location.bounds) {
@@ -91,11 +95,13 @@
 			zoom = map.getZoom();
 			center = map.getCenter();
 		});
+	});
 
-		return () => {
-			if (map) map.remove();
-			map = null;
-		}
+	onDestroy(async () => {
+		await sleep(250);
+
+		if (map) map.remove();
+		map = null;
 	});
 
 	// Function to switch map style if style prop changes
