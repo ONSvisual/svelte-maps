@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext, onDestroy } from 'svelte';
   import maplibre from 'maplibre-gl';
 
   export let content;
@@ -25,6 +25,8 @@
   }
 
   $: updateTooltip($hoverObj, content);
+
+  onDestroy(() => tooltip.remove());
 </script>
 
 <style>
