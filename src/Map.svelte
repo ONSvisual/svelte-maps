@@ -32,6 +32,7 @@
 	export let zoom = null;
 	export let center = null;
 	export let interactive = true;
+	export let attribution = true;
 
 	let container;
 	let _options = {};
@@ -54,6 +55,11 @@
 			_options.zoom = location.zoom;
 		}
 	}
+	// Disable attribution if attribution = false
+	if (!attribution) {
+		_options.attributionControl = false;
+	}
+
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
 	onMount(() => {
