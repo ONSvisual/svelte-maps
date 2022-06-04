@@ -107,7 +107,7 @@
 		let source = map.getSource(id);
 		if (source) source.setTiles([url]);
 	}
-	$: type == "vector" && loaded && setTiles(url);
+	$: ["vector", "raster"].includes(type) && loaded && setTiles(url);
 	
 	onDestroy(async () => {
 		if (map && map.getSource(id)) {

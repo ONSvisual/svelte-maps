@@ -1,6 +1,6 @@
 {
   "name": "@onsvisual/svelte-maps",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Reusable map components for Svelte projects.",
   "homepage": "http://onsvisual.github.io/svelte-maps",
   "module": "index.mjs",
