@@ -110,7 +110,7 @@
 	$: type == "vector" && loaded && setVectorTiles(url);
 
 	function setRasterTiles(url) {
-		map.getSource(id).tiles = [ `${url}?dt=${Date.now()}` ];
+		map.getSource(id).tiles = [ `${url}${url.includes('?') ? '&' : '?'}dt=${Date.now()}` ];
 		map.style.sourceCaches[id].clearTiles();
 		map.style.sourceCaches[id].update(map.transform);
 		map.triggerRepaint();
