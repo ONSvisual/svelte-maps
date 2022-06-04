@@ -103,11 +103,19 @@
 	}
 	$: type == "geojson" && loaded && setData(data);
 
-	function setTiles(url) {
+	function setVectorTiles(url) {
 		let source = map.getSource(id);
 		if (source) source.setTiles([url]);
 	}
-	$: ["vector", "raster"].includes(type) && loaded && setTiles(url);
+	$: type == "vector" && loaded && setVectorTiles(url);
+
+	function setRasterTiles(url) {
+		map.getSource(id).tiles = [ `${url}?dt=${Date.now()}` ];
+		map.style.sourceCaches[id].clearTiles();
+		map.style.sourceCaches[id].update(map.transform);
+		map.triggerRepaint();
+	}
+	$: type == "raster" && loaded && setRasterTiles(url);
 	
 	onDestroy(async () => {
 		if (map && map.getSource(id)) {
