@@ -123,6 +123,16 @@
 	}
 	$: setFilter(filter);
 
+	// Function to update paint properties
+	function setPaint(paint) {
+		if (map.getLayer(id)) {
+			for (const key in paint) {
+				map.setPaintProperty(id, key, paint[key]);
+			}
+		};
+	}
+	$: setPaint(paint);
+
 	// Function to toggle layer visibility based on "visible" prop
 	function toggleVisibility(visible) {
 		if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
