@@ -10,6 +10,7 @@
 	export let promoteId = null;
 	export let minzoom = null;
 	export let maxzoom = null;
+	export let tilesize = 256;
 	
 	let loaded = false;
 	
