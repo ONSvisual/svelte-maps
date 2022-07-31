@@ -26,6 +26,7 @@
 	export let minzoom = 0;
 	export let maxzoom = 14;
 	export let controls = false;
+	export let compass = false;
 	export let locate = false;
 	export let tabbable = false;
 
@@ -73,7 +74,7 @@
 		});
 		
 		if (controls) {
-			map.addControl(new maplibre.NavigationControl({showCompass: false}));
+			map.addControl(new maplibre.NavigationControl({showCompass: compass}));
 		}
 		
 		if (locate) {
