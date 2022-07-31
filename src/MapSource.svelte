@@ -64,30 +64,37 @@
   	if (type == "geojson") {
 	  	if (data) {
 		  	layerdef = {
-	  		  type: type,
-	  		  data: data,
+	  		  type,
+	  		  data,
 					...props
 				};
   		} else if (url) {
 	  		layerdef = {
-	  		  type: type,
+	  		  type,
 	  		  data: url,
 					...props
 				};
 		  }
 	  } else if (type == "vector") {
 	  	layerdef = {
-	  		type: type,
+	  		type,
 	  		tiles: [ url ],
 	  		...props
 			};
 		} else if (type == "raster") {
 	  	layerdef = {
-	  		type: type,
+	  		type,
 	  		tiles: [ url ],
 				tileSize: tilesize,
 	  		...props
 			};
+		} else if (type == "raster-dem") {
+			layerdef = {
+				type,
+				url,
+				tileSize: tilesize,
+				...props
+			}
 		}
 		if (layerdef) {
 			map.addSource(id, layerdef);
