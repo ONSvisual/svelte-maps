@@ -91,7 +91,7 @@
 		} else if (type == "raster-dem") {
 			layerdef = {
 				type,
-				url,
+				tiles: [ url ],
 				tileSize: tilesize,
 				...props
 			}
