@@ -27,6 +27,7 @@
 	export let maxzoom = 14;
 	export let controls = false;
 	export let compass = false;
+	export let pitch = false;
 	export let locate = false;
 	export let tabbable = false;
 
@@ -74,7 +75,7 @@
 		});
 		
 		if (controls) {
-			map.addControl(new maplibre.NavigationControl({showCompass: compass}));
+			map.addControl(new maplibre.NavigationControl({showCompass: compass, visualizePitch: pitch}));
 		}
 		
 		if (locate) {
