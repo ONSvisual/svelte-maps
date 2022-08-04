@@ -50,8 +50,8 @@
 	// Interpret location
 	if (location.bounds) {
 		_options.bounds = location.bounds;
-	} else if (typeof location.lng == 'number' && typeof location.lat == 'number') {
-		_options.center = [location.lng, location.lat];
+	} else if (location.lng && location.lat) {
+		_options.center = [+location.lng, +location.lat];
 		if (location.zoom) {
 			_options.zoom = +location.zoom;
 		}
