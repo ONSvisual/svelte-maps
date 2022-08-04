@@ -26,13 +26,12 @@
 	export let minzoom = 0;
 	export let maxzoom = 14;
 	export let controls = false;
-	export let compass = false;
-	export let pitch = false;
-	export let locate = false;
 	export let tabbable = false;
 
 	export let zoom = null;
 	export let center = null;
+	export let pitch = null;
+	export let bearing = null;
 	export let interactive = true;
 	export let attribution = true;
 
@@ -74,11 +73,13 @@
 			..._options,
 		});
 		
-		if (controls) {
-			map.addControl(new maplibre.NavigationControl({showCompass: compass, visualizePitch: pitch}));
+		if (controls && !Array.isArray(controls)) {
+			map.addControl(new maplibre.NavigationControl({showCompass: false}));
+		} else if (Array.isArray(controls) && controls != ["locate"]) {
+			map.addControl(new maplibre.NavigationControl({showCompass: controls.includes("compass"), visualizePitch: controls.includes("pitch")}));
 		}
 		
-		if (locate) {
+		if (Array.isArray(controls) && controls.includes("locate")) {
 			map.addControl(new maplibre.GeolocateControl());
 		}
 		
@@ -102,6 +103,8 @@
 		map.on("moveend", () => {
 			zoom = map.getZoom();
 			center = map.getCenter();
+			pitch = map.getPitch();
+			bearing = map.getBearing();
 		});
 	});
 
