@@ -52,8 +52,14 @@
 		_options.bounds = location.bounds;
 	} else if (typeof location.lng == 'number' && typeof location.lat == 'number') {
 		_options.center = [location.lng, location.lat];
-		if (typeof location.zoom == 'number') {
-			_options.zoom = location.zoom;
+		if (location.zoom) {
+			_options.zoom = +location.zoom;
+		}
+		if (location.pitch) {
+			_options.pitch = +location.pitch;
+		}
+		if (location.bearing) {
+			_options.bearing = +location.bearing;
 		}
 	}
 	// Disable attribution if attribution = false
