@@ -1,6 +1,6 @@
 {
   "name": "@onsvisual/svelte-maps",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Reusable map components for Svelte projects.",
   "homepage": "http://onsvisual.github.io/svelte-maps",
   "module": "index.mjs",
@@ -47,10 +47,8 @@
     "sirv-cli": "^1.0.0",
     "topojson-client": "^3.1.0"
   },
-  "dependencies": {
-    "maplibre-gl": "^2.1.9"
-  },
   "peerDependencies": {
+    "maplibre-gl": "^2.2.0-pre.3",
     "svelte": "^3.32.2"
   },
   "main": "index.mjs"
