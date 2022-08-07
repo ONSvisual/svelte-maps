@@ -93,6 +93,8 @@
 		map.on("load", (e) => {
 			zoom = map.getZoom();
 			center = map.getCenter();
+			pitch = map.getPitch();
+			bearing = map.getBearing();
 			loaded = true;
 			
 			// Prevent map from being tabbable
