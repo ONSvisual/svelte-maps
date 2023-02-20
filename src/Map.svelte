@@ -22,6 +22,7 @@
 			}
 		]
 	}; // Can be a json style definition or a url
+	export let css = null; // To set a local url for the css file (instead of CDN default)
 	export let options = {};
 	export let minzoom = 0;
 	export let maxzoom = 14;
@@ -136,7 +137,7 @@
 <svelte:head>
 	<link
 		rel="stylesheet"
-		href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css"
+		href="{ css ? css : 'https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css' }"
 	/>
 </svelte:head>
 
