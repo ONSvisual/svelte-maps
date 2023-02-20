@@ -137,7 +137,7 @@
 <svelte:head>
 	<link
 		rel="stylesheet"
-		href="{ css ? css : 'https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css' }"
+		href="{ css ? css : 'https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' }"
 	/>
 </svelte:head>
 
