@@ -1,5 +1,5 @@
 <script>
-	import { getContext, setContext, onDestroy } from 'svelte';
+	import { getContext, setContext, onMount, onDestroy } from 'svelte';
 	
 	export let id;
 	export let type;
@@ -13,6 +13,7 @@
 	export let tilesize = 256;
 	
 	let loaded = false;
+	let urlPrev = url;
 	
 	const { getMap } = getContext('map');
 	const map = getMap();
@@ -101,12 +102,11 @@
 			}
 		}
 		if (layerdef) {
+			console.log(layerdef)
 			map.addSource(id, layerdef);
 			isSourceLoaded();
 		}
 	};
-
-	addSource();
 
 	function setData(data) {
 		let source = map.getSource(id);
@@ -115,19 +115,33 @@
 	$: type == "geojson" && loaded && setData(data);
 
 	function setVectorTiles(url) {
-		let source = map.getSource(id);
-		if (source) source.setTiles([url]);
+		if (url !== urlPrev) {
+			let source = map.getSource(id);
+			if (source) {
+				if (url.slice(0, 7) === "pmtiles") {
+					source.setUrl(url);
+				} else {
+					source.setTiles([url]);
+				}
+			}
+			urlPrev = url;
+		}
 	}
 	$: type == "vector" && loaded && setVectorTiles(url);
 
 	function setRasterTiles(url) {
-		map.getSource(id).tiles = [ url ];
-		map.style.sourceCaches[id].clearTiles();
-		map.style.sourceCaches[id].update(map.transform);
-		map.triggerRepaint();
+		if (url !== urlPrev) {
+			map.getSource(id).tiles = [ url ];
+			map.style.sourceCaches[id].clearTiles();
+			map.style.sourceCaches[id].update(map.transform);
+			map.triggerRepaint();
+			urlPrev = url;
+		}
 	}
 	$: type == "raster" && loaded && setRasterTiles(url);
 	
+	onMount(addSource);
+
 	onDestroy(async () => {
 		if (map && map.getSource(id)) {
 			let layers = map.getStyle().layers;

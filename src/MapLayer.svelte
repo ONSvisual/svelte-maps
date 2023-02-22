@@ -1,5 +1,5 @@
 <script>
-	import { getContext, setContext, createEventDispatcher, onDestroy } from 'svelte';
+	import { getContext, setContext, createEventDispatcher, onDestroy, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	const dispatch = createEventDispatcher();
@@ -79,10 +79,10 @@
 		options['minzoom'] = minzoom;
 	}
 	
-	if (map.getLayer(id)) {
-    map.removeLayer(id);
-	}
-	map.addLayer(options, order);
+	onMount(() => {
+		if (map.getLayer(id)) map.removeLayer(id);
+		map.addLayer(options, order);
+	});
 
 	// Updates "color" feature states for all geo codes in data array
 	// Assumes that each data point has the colours defined on the colorCode key
