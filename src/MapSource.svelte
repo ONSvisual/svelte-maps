@@ -78,9 +78,13 @@
 	  } else if (type == "vector") {
 	  	layerdef = {
 	  		type,
-	  		tiles: [ url ],
 	  		...props
 			};
+			if (url.slice(0, 7) === "pmtiles") {
+				layerdef.url = url;
+			} else {
+				layerdef.tiles = [url];
+			}
 		} else if (type == "raster") {
 	  	layerdef = {
 	  		type,
