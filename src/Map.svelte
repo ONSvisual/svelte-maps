@@ -1,7 +1,6 @@
 <script>
 	import { setContext, createEventDispatcher, onMount, onDestroy } from "svelte";
 	import maplibre from "maplibre-gl";
-	import * as _pmtiles from "pmtiles";
 
 	const dispatch = createEventDispatcher();
 
@@ -24,7 +23,6 @@
 		]
 	}; // Can be a json style definition or a url
 	export let css = null; // To set a local url for the css file (instead of CDN default)
-	export let pmtiles = false;
 	export let options = {};
 	export let minzoom = 0;
 	export let maxzoom = 14;
@@ -73,11 +71,6 @@
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
 	onMount(() => {
-		if (pmtiles) {
-			let protocol = new _pmtiles.Protocol();
-			maplibre.addProtocol("pmtiles",protocol.tile);
-		}
-
 		map = new maplibre.Map({
 			container,
 			style,
@@ -144,7 +137,7 @@
 <svelte:head>
 	<link
 		rel="stylesheet"
-		href="{ css ? css : 'https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css' }"
+		href="{ css ? css : 'https://unpkg.com/maplibre-gl@3.3.1/dist/maplibre-gl.css' }"
 	/>
 </svelte:head>
 

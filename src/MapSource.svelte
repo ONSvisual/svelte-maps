@@ -79,13 +79,9 @@
 	  } else if (type == "vector") {
 	  	layerdef = {
 	  		type,
+				tiles: [url],
 	  		...props
 			};
-			if (url.slice(0, 7) === "pmtiles") {
-				layerdef.url = url;
-			} else {
-				layerdef.tiles = [url];
-			}
 		} else if (type == "raster") {
 	  	layerdef = {
 	  		type,
@@ -117,13 +113,7 @@
 	function setVectorTiles(url) {
 		if (url !== urlPrev) {
 			let source = map.getSource(id);
-			if (source) {
-				if (url.slice(0, 7) === "pmtiles") {
-					source.setUrl(url);
-				} else {
-					source.setTiles([url]);
-				}
-			}
+			if (source) source.setTiles([url]);
 			urlPrev = url;
 		}
 	}
