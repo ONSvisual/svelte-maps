@@ -37,9 +37,9 @@
 
     if (map.isSourceLoaded(id)) {
 			loaded = true;
-			console.log(id + ' map source loaded!');
+			console.debyg(id + ' map source loaded!');
     } else {
-			console.log('...');
+			console.debug('...');
 			isSourceLoaded();
 		}
 	}
@@ -59,7 +59,7 @@
 	}
 	
 	function addSource() {
-		console.log(id + ' map source loading...');
+		console.debug(id + ' map source loading...');
 		let layerdef;
 		
   	if (type == "geojson") {
@@ -98,7 +98,6 @@
 			}
 		}
 		if (layerdef) {
-			console.log(layerdef)
 			map.addSource(id, layerdef);
 			isSourceLoaded();
 		}

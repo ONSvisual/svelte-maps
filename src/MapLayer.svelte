@@ -87,7 +87,7 @@
 	// Updates "color" feature states for all geo codes in data array
 	// Assumes that each data point has the colours defined on the colorCode key
 	export function updateColors(data, cKey = colorKey) {
-		console.log('updating colors...');
+		console.debug('updating colors...');
 
 		if (nameKey || valueKey) {
 			for (const d of data) {
