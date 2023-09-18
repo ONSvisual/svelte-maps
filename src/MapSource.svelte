@@ -37,7 +37,7 @@
 
     if (map.isSourceLoaded(id)) {
 			loaded = true;
-			console.debyg(id + ' map source loaded!');
+			console.debug(id + ' map source loaded!');
     } else {
 			console.debug('...');
 			isSourceLoaded();
