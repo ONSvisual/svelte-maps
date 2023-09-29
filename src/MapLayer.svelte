@@ -89,6 +89,8 @@
 	export function updateColors(data, cKey = colorKey) {
 		console.debug('updating colors...');
 
+		map.removeFeatureState({source: source, sourceLayer: sourceLayer});
+
 		if (nameKey || valueKey) {
 			for (const d of data) {
 				map.setFeatureState({
