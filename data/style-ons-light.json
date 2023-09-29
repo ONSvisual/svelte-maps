@@ -123,7 +123,7 @@
       "source-layer": "waterway",
       "filter": ["==", "$type", "LineString"],
       "layout": {"visibility": "visible"},
-      "paint": {"line-color": "hsl(100%, 100%, 100%)"}
+      "paint": {"line-color": "hsl(0, 100%, 100%)"}
     },
     {
       "id": "water_name",
