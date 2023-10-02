@@ -86,35 +86,34 @@
 
 	// Updates "color" feature states for all geo codes in data array
 	// Assumes that each data point has the colours defined on the colorCode key
+	let stateIds = [];
 	export function updateColors(data, cKey = colorKey) {
 		console.debug('updating colors...');
 
-		map.removeFeatureState({source: source, sourceLayer: sourceLayer});
-
-		if (nameKey || valueKey) {
-			for (const d of data) {
-				map.setFeatureState({
-					source: source,
-					sourceLayer: sourceLayer,
-					id: d[idKey]
-				}, {
-					color: cKey ? d[cKey] : null,
-					name: nameKey ? d[nameKey] : null,
-					value: valueKey ? d[valueKey] : null
-				});
-			}
-		} else {
-			for (const d of data) {
-				map.setFeatureState({
-					source: source,
-					sourceLayer: sourceLayer,
-					id: d[idKey]
-				}, {
-					color: d[cKey]
-				});
-			}
+		for (const id of stateIds) {
+			map.setFeatureState({
+				source: source,
+				sourceLayer: sourceLayer,
+				id: id
+			}, {
+				color: null,
+				value: null
+			});
 		}
-		
+		stateIds = [];
+
+		for (const d of data) {
+			map.setFeatureState({
+				source: source,
+				sourceLayer: sourceLayer,
+				id: d[idKey]
+			}, {
+				color: cKey ? d[cKey] : null,
+				value: valueKey ? d[valueKey] : null,
+				name: nameKey ? d[nameKey] : null
+			});
+			stateIds.push(d[idKey]);
+		}
 	}
 
 	$: data && updateColors(data, colorKey);
