@@ -55,7 +55,7 @@
 	let hoveredPrev = null;
 	let highlightedPrev = [];
 
-	layout.visibility = visible ? 'visible' : 'none';
+	if (!layout.visibility) layout.visibility = visible ? 'visible' : 'none';
 	
 	let options = {
 		'id': id,
@@ -124,11 +124,21 @@
 	}
 	$: setFilter(filter);
 
+	// Function to update layout properties
+	function setLayout(layout) {
+		if (map.getLayer(id)) {
+			for (const key in layout) {
+				map.setLayoutProperty(id, key, layout[key]);
+			}
+		};
+	}
+	$: setLayout(layout);
+
 	// Function to update paint properties
 	function setPaint(paint) {
 		if (map.getLayer(id)) {
 			for (const key in paint) {
-				map.setPaintProperty(id, key, paint[key]);
+				map.setLayoutProperty(id, key, paint[key]);
 			}
 		};
 	}
@@ -136,7 +146,7 @@
 
 	// Function to toggle layer visibility based on "visible" prop
 	function toggleVisibility(visible) {
-		if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
+		if (!layout.visibility && map.getLayer(id)) map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none');
 	}
 	$: toggleVisibility(visible);
 	
