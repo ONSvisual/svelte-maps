@@ -55,14 +55,15 @@
 	let hoveredPrev = null;
 	let highlightedPrev = [];
 
-	if (!layout.visibility) layout.visibility = visible ? 'visible' : 'none';
+	let _layout = {...layout};
+	if (!layout.visibility) _layout.visibility = visible ? 'visible' : 'none';
 	
 	let options = {
 		'id': id,
 		'type': type,
 		'source': source,
 		'paint': paint,
-		'layout': layout
+		'layout': _layout
 	};
 
 	if (filter) {
