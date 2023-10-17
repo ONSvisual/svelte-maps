@@ -138,7 +138,7 @@
 	function setPaint(paint) {
 		if (map.getLayer(id)) {
 			for (const key in paint) {
-				map.setLayoutProperty(id, key, paint[key]);
+				map.setPaintProperty(id, key, paint[key]);
 			}
 		};
 	}
