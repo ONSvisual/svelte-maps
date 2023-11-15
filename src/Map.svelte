@@ -44,8 +44,13 @@
 		getMap: () => map,
 	});
 
-	function sleep (ms = 1000) {
-  	return new Promise((resolve) => setTimeout(resolve, ms));
+	function updateLocation() {
+		if (typeof map?.getZoom === "function") {
+			zoom = map.getZoom();
+			center = map.getCenter();
+			pitch = map.getPitch();
+			bearing = map.getBearing();
+		}
 	}
 	
 	// Interpret location
@@ -71,7 +76,7 @@
 	_options = {..._options, ...options}; // Combine core options + custom user options
 
 	onMount(() => {
-		map = new maplibre.Map({
+		const newmap = new maplibre.Map({
 			container,
 			style,
 			minZoom: minzoom,
@@ -80,14 +85,7 @@
 			..._options,
 		});
 
-		function updateLocation() {
-			if (typeof map?.getZoom === "function") {
-				zoom = map.getZoom();
-				center = map.getCenter();
-				pitch = map.getPitch();
-				bearing = map.getBearing();
-			}
-		}
+		map = newmap;
 		
 		if (controls && !Array.isArray(controls)) {
 			map.addControl(new maplibre.NavigationControl({showCompass: false}));
@@ -116,12 +114,8 @@
 
 		// Update zoom level and center when the view changes
 		map.on("moveend", updateLocation);
-	});
 
-	onDestroy(async () => {
-		if (typeof map?.remove === "function") {
-			map.remove();
-		}
+		return () => newmap.remove();
 	});
 
 	// Function to switch map style if style prop changes
