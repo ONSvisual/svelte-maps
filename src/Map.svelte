@@ -110,16 +110,21 @@
 
 		// Update zoom level and center when the view changes
 		map.on("moveend", () => {
-			zoom = map.getZoom();
-			center = map.getCenter();
-			pitch = map.getPitch();
-			bearing = map.getBearing();
+			if (typeof map?.getZoom === "function") {
+				zoom = map.getZoom();
+				center = map.getCenter();
+				pitch = map.getPitch();
+				bearing = map.getBearing();
+			}
 		});
 	});
 
 	onDestroy(async () => {
-		if (typeof map?.remove === "function") map.remove();
-		map = null;
+		await sleep(100);
+		if (typeof map?.remove === "function") {
+			map.remove();
+			map = null;
+		}
 	});
 
 	// Function to switch map style if style prop changes
