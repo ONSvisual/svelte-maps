@@ -40,7 +40,7 @@
 	let _options = {};
 	let loaded = false;
 
-	const getMap = () => map;
+	setContext("map", { getMap: () => map });
 
 	function sleep (ms = 1000) {
   	return new Promise((resolve) => setTimeout(resolve, ms));
@@ -88,7 +88,6 @@
 		});
 
 		map = newmap;
-		setContext("map", { getMap });
 		
 		if (controls && !Array.isArray(controls)) {
 			map.addControl(new maplibre.NavigationControl({showCompass: false}));
