@@ -40,9 +40,11 @@
 	let _options = {};
 	let loaded = false;
 
-	setContext("map", {
-		getMap: () => map,
-	});
+	const getMap = () => map;
+
+	function sleep (ms = 1000) {
+  	return new Promise((resolve) => setTimeout(resolve, ms));
+	}
 
 	function updateLocation() {
 		if (typeof map?.getZoom === "function") {
@@ -86,6 +88,7 @@
 		});
 
 		map = newmap;
+		setContext("map", { getMap });
 		
 		if (controls && !Array.isArray(controls)) {
 			map.addControl(new maplibre.NavigationControl({showCompass: false}));
@@ -115,7 +118,10 @@
 		// Update zoom level and center when the view changes
 		map.on("moveend", updateLocation);
 
-		return () => newmap.remove();
+		return async () => {
+			await sleep(100);
+			newmap.remove();
+		};
 	});
 
 	// Function to switch map style if style prop changes
