@@ -117,8 +117,8 @@
 		});
 	});
 
-	onDestroy(() => {
-		if (map) map.remove();
+	onDestroy(async () => {
+		map?.remove();
 		map = null;
 	});
 
