@@ -117,9 +117,7 @@
 		});
 	});
 
-	onDestroy(async () => {
-		await sleep(250);
-
+	onDestroy(() => {
 		if (map) map.remove();
 		map = null;
 	});
