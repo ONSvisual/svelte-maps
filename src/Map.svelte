@@ -119,10 +119,8 @@
 	});
 
 	onDestroy(async () => {
-		await sleep(10);
 		if (typeof map?.remove === "function") {
 			map.remove();
-			map = null;
 		}
 	});
 
