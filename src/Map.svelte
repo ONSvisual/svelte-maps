@@ -79,6 +79,15 @@
 			interactive,
 			..._options,
 		});
+
+		function updateLocation() {
+			if (typeof map?.getZoom === "function") {
+				zoom = map.getZoom();
+				center = map.getCenter();
+				pitch = map.getPitch();
+				bearing = map.getBearing();
+			}
+		}
 		
 		if (controls && !Array.isArray(controls)) {
 			map.addControl(new maplibre.NavigationControl({showCompass: false}));
@@ -92,10 +101,7 @@
 		
 		// Get initial zoom level
 		map.on("load", (e) => {
-			zoom = map.getZoom();
-			center = map.getCenter();
-			pitch = map.getPitch();
-			bearing = map.getBearing();
+			updateLocation();
 			loaded = true;
 			
 			// Prevent map from being tabbable
@@ -109,18 +115,11 @@
 		});
 
 		// Update zoom level and center when the view changes
-		map.on("moveend", () => {
-			if (typeof map?.getZoom === "function") {
-				zoom = map.getZoom();
-				center = map.getCenter();
-				pitch = map.getPitch();
-				bearing = map.getBearing();
-			}
-		});
+		map.on("moveend", updateLocation);
 	});
 
 	onDestroy(async () => {
-		await sleep(100);
+		await sleep(10);
 		if (typeof map?.remove === "function") {
 			map.remove();
 			map = null;
