@@ -301,7 +301,7 @@
 	}
 	
 	onDestroy(async () => {
-		if (map?.getLayer(id)) map.removeLayer(id);
+		if (typeof map?.getLayer === "function" && map.getLayer(id)) map.removeLayer(id);
 	});
 </script>
 

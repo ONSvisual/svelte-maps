@@ -132,7 +132,7 @@
 	onMount(addSource);
 
 	onDestroy(async () => {
-		if (map?.getSource(id)) {
+		if (typeof map?.getSource === "function" && map.getSource(id)) {
 			let layers = map.getStyle().layers;
 			layers.filter(l => l.source == id)
 			.forEach(l => {
