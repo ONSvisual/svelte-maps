@@ -29,6 +29,19 @@
 		uk: [[ -9, 49 ], [ 2, 61 ]],
 		ew: [[-6, 49], [2, 56]]
 	};
+
+	const baseMaps = [
+		{
+			key: "omt",
+			label: "OpenMapTiles",
+			path: "./data/style-ons-light.json"
+		},
+		{
+			key: "osm",
+			label: "OpenStreetMap",
+			path: "./data/style-osm-grey.json"
+		},
+	];
 	
 	// Bindings
 	let map1, map2, map3, map4;
@@ -45,6 +58,7 @@
 	let showSources = true;
 	let showLayers = true;
 	let visLayers = true;
+	let baseMap = baseMaps[0];
 
 	// Get geometry for geojson maps
 	getTopo(pconBounds.url, pconBounds.layer)
@@ -86,6 +100,14 @@
     <p>This library contains a series of components for building Maplibre GL JS maps within Svelte apps. They are primarily built with data visualisation use cases in mind, and generally assume the use of self-hosted map tiles and/or geojson sources.</p>
 		<p>Below are a series of examples of how to use the components to display maps. View the source code of the <a href="https://github.com/ONSvisual/svelte-maps/blob/main/src/App.svelte">App.svelte</a> file in this repository to see how they are used.</p>
 		<p>
+			Base map:
+			<select bind:value={baseMap}>
+				{#each baseMaps as option}
+				<option value={option}>{option.label}</option>
+				{/each}
+			</select>
+		</p>
+		<p>
 			Create/destroy:
 			<label><input type="checkbox" bind:checked={showSources}/> Sources</label>
 			<label><input type="checkbox" bind:checked={showLayers}/> Layers</label>
@@ -101,7 +123,7 @@
 	<div class="grid">
 		<div>
 			<div class="map">
-				<Map id="map1" style="./data/style-osm.json" bind:map={map1} bind:zoom={zoom} bind:center={center}/>
+				<Map id="map1" style={baseMap.path} bind:map={map1} bind:zoom={zoom} bind:center={center}/>
 			</div>
 			Plain OSM base map with location bindings<br/>
 			(zoom: {zoom ? zoom.toFixed(1) : ''},
@@ -111,7 +133,7 @@
 		<div>
 			<div class="map">
 			  {#if geojson && data.pcon}
-			  <Map id="map2" style="./data/style-osm-grey.json" location={{bounds: bounds.uk}} bind:map={map2} controls={true}>
+			  <Map id="map2" style={baseMap.path} location={{bounds: bounds.uk}} bind:map={map2} controls={true}>
 					{#if showSources}
 				  <MapSource
 					  id="pcon"
@@ -131,6 +153,7 @@
 					  		],
 					  		'fill-opacity': 0.7
 					  	}}
+							order={baseMap.key === "omt" ? "water_name" : null}
 							visible={visLayers}
 				    />
 						{/if}
@@ -144,7 +167,7 @@
 		<div>
 			<div class="map">
 			  {#if geojson && data.pcon}
-			  <Map id="map3" style="./data/style-osm-grey.json" location={{bounds: bounds.uk}} bind:map={map3} controls={true}>
+			  <Map id="map3" style={baseMap.path} location={{bounds: bounds.uk}} bind:map={map3} controls={true}>
 					{#if showSources}
 			  	<MapSource
 					  id="pcon"
@@ -168,6 +191,7 @@
 					  		],
 					  		'fill-opacity': 0.7
 				  		}}
+							order={baseMap.key === "omt" ? "water_name" : null}
 							visible={visLayers}
 				    >
 						  <MapTooltip content={`Code: ${hovered}`}/>
@@ -200,7 +224,7 @@
 		</div>
 		<div>
 			<div class="map">
-			  <Map id="map4" style="./data/style-ons-light.json" location={{lng: -2, lat: 52, zoom: 8}} bind:map={map4} controls={true} minzoom={5}>
+			  <Map id="map4" style={baseMap.path} location={{lng: -2, lat: 52, zoom: 8}} bind:map={map4} controls={true} minzoom={5}>
 					{#if showSources}
 			    <MapSource
 				  	id="lsoa"
@@ -222,7 +246,7 @@
 				  			],
 				  			'fill-opacity': 0.8
 				  		}}
-							order="water_name"
+							order={baseMap.key === "omt" ? "water_name" : null}
 							visible={visLayers}
 				    />
 				  	{/if}

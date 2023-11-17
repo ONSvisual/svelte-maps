@@ -124,11 +124,15 @@
 	});
 
 	// Function to switch map style if style prop changes
-	function setStyle(style) {
-		if (map) map.setStyle(style);
-		dispatch("style", {
-			style
-		});
+	async function setStyle(style) {
+		if (map) {
+			loaded = false;
+			map.setStyle(style);
+			map.once("idle", () => loaded = true);
+			dispatch("style", {
+				style
+			});
+		}
 	}
 	$: setStyle(style);
 </script>
