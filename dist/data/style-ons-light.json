@@ -29,7 +29,7 @@
       "attribution": "<a href=\"https://www.openstreetmap.org\" target=\"_blank\">&copy; OpenStreetMap</a>"
     }
   },
-  "sprite": "https://bothness.github.io/ons-basemaps/data/sprite",
+  "sprite": "https://cdn.ons.gov.uk/maptiles/osm/spritesv1/light",
   "glyphs": "https://cdn.ons.gov.uk/maptiles/osm/fontsv1/{fontstack}/{range}.pbf",
   "layers": [
     {
