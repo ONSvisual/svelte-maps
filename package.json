@@ -1,6 +1,6 @@
 {
   "name": "@onsvisual/svelte-maps",
-  "version": "1.2.19",
+  "version": "1.2.20",
   "description": "Reusable map components for Svelte projects.",
   "homepage": "http://onsvisual.github.io/svelte-maps",
   "module": "index.mjs",
@@ -10,6 +10,11 @@
     "src",
     "dist"
   ],
+  "exports":{
+    ".":{
+      "svelte":"./index.mjs"
+    }
+  },
   "scripts": {
     "build": "rollup -c rollup.config.build.js",
     "dev": "rollup -c rollup.config.dev.js -w",
