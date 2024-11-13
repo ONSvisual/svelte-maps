@@ -10,9 +10,9 @@
     "src",
     "dist"
   ],
-  "exports":{
-    ".":{
-      "svelte":"./index.mjs"
+  "exports": {
+    ".": {
+      "svelte": "./index.mjs"
     }
   },
   "scripts": {
@@ -43,7 +43,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "d3-dsv": "^3.0.1",
-    "gh-pages": "^3.2.3",
+    "gh-pages": "^6.2.0",
     "rollup": "^2.38.5",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
@@ -54,7 +54,7 @@
   },
   "peerDependencies": {
     "maplibre-gl": "^3.3.1",
-    "svelte": "3 - 4"
+    "svelte": "3 - 5"
   },
   "main": "index.mjs"
 }
