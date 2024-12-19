@@ -40,6 +40,7 @@
   export let bearing = null;
   export let interactive = true;
   export let attribution = true;
+  export let mapDescription = 'Map';
 
   let container;
   let _options = {};
@@ -94,9 +95,10 @@
 
     map = newmap;
 
-    const canvas = document.querySelector("canvas");
+    const canvas = container.querySelector("canvas");
     if (canvas) {
       canvas.removeAttribute("role");
+      canvas.setAttribute("aria-label", mapDescription)
     }
 
     if (controls && !Array.isArray(controls)) {
