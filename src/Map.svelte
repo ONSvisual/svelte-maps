@@ -173,8 +173,17 @@
   :global(.maplibregl-control-container button) {
     margin: 0;
   }
+
+  :global(#{id} .maplibregl-ctrl-group button:focus) {
+    box-shadow:  0 0 1px var(--ons-color-input-border, #222),0 0 0 4px var(--ons-color-focus, #FBC900) !important;
+  }
+
   .map {
     width: 100%;
     height: 100%;
   }
+
+  /* :global(.maplibre-control-container .maplibre-ctrl-group button:focus) {
+    
+  } */
 </style>
