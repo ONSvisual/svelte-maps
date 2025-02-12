@@ -174,7 +174,7 @@
     margin: 0;
   }
 
-  :global(#{id} .maplibregl-ctrl-group button:focus) {
+  :global(.maplibregl-ctrl-group button:focus) {
     box-shadow:  0 0 1px var(--ons-color-input-border, #222),0 0 0 4px var(--ons-color-focus, #FBC900) !important;
   }
 
