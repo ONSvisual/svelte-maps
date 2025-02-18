@@ -40,7 +40,7 @@
   export let bearing = null;
   export let interactive = true;
   export let attribution = true;
-  export let mapDescription = 'Map';
+  export let mapDescription = "Map";
 
   let container;
   let _options = {};
@@ -58,6 +58,21 @@
       center = map.getCenter();
       pitch = map.getPitch();
       bearing = map.getBearing();
+    }
+  }
+
+  // Function to update zoom button labels
+  function updateZoomButtonLabels() {
+    const zoomInButton = container.querySelector(".maplibregl-ctrl-zoom-in");
+    if (zoomInButton) {
+      zoomInButton.setAttribute("aria-label", "Zoom in on map");
+      zoomInButton.title = "Zoom in on map";
+    }
+
+    const zoomOutButton = container.querySelector(".maplibregl-ctrl-zoom-out");
+    if (zoomOutButton) {
+      zoomOutButton.setAttribute("aria-label", "Zoom out on map");
+      zoomOutButton.title = "Zoom out on map";
     }
   }
 
@@ -98,11 +113,13 @@
     const canvas = container.querySelector("canvas");
     if (canvas) {
       canvas.removeAttribute("role");
-      canvas.setAttribute("aria-label", mapDescription)
+      canvas.setAttribute("aria-label", mapDescription);
     }
 
     if (controls && !Array.isArray(controls)) {
       map.addControl(new maplibre.NavigationControl({ showCompass: false }));
+      // After adding controls, wait for them to be rendered
+      setTimeout(updateZoomButtonLabels, 100);
     } else if (Array.isArray(controls) && controls != ["locate"]) {
       map.addControl(
         new maplibre.NavigationControl({
@@ -110,6 +127,8 @@
           visualizePitch: controls.includes("pitch"),
         })
       );
+      // After adding controls, wait for them to be rendered
+      setTimeout(updateZoomButtonLabels, 100);
     }
 
     if (Array.isArray(controls) && controls.includes("locate")) {
@@ -125,6 +144,9 @@
       if (!tabbable && document.querySelector(`#${id} canvas`)) {
         document.querySelector(`#${id} canvas`).tabIndex = "-1";
       }
+
+      // Check for the button after the map is fully loaded
+      updateZoomButtonLabels();
 
       dispatch("load", {
         event: e,
@@ -145,7 +167,11 @@
     if (map) {
       loaded = false;
       map.setStyle(style);
-      map.once("idle", () => (loaded = true));
+      map.once("idle", () => {
+        loaded = true;
+        // Check again for the button after style change
+        setTimeout(updateZoomButtonLabels, 100);
+      });
       dispatch("style", {
         style,
       });
@@ -175,15 +201,13 @@
   }
 
   :global(.maplibregl-ctrl-group button:focus) {
-    box-shadow:  0 0 1px var(--ons-color-input-border, #222),0 0 0 4px var(--ons-color-focus, #FBC900) !important;
+    box-shadow:
+      0 0 1px var(--ons-color-input-border, #222),
+      0 0 0 4px var(--ons-color-focus, #fbc900) !important;
   }
 
   .map {
     width: 100%;
     height: 100%;
   }
-
-  /* :global(.maplibre-control-container .maplibre-ctrl-group button:focus) {
-    
-  } */
 </style>
