@@ -118,8 +118,6 @@
 
     if (controls && !Array.isArray(controls)) {
       map.addControl(new maplibre.NavigationControl({ showCompass: false }));
-      // After adding controls, wait for them to be rendered
-      setTimeout(updateZoomButtonLabels, 100);
     } else if (Array.isArray(controls) && controls != ["locate"]) {
       map.addControl(
         new maplibre.NavigationControl({
@@ -127,8 +125,6 @@
           visualizePitch: controls.includes("pitch"),
         })
       );
-      // After adding controls, wait for them to be rendered
-      setTimeout(updateZoomButtonLabels, 100);
     }
 
     if (Array.isArray(controls) && controls.includes("locate")) {
@@ -169,8 +165,6 @@
       map.setStyle(style);
       map.once("idle", () => {
         loaded = true;
-        // Check again for the button after style change
-        setTimeout(updateZoomButtonLabels, 100);
       });
       dispatch("style", {
         style,
