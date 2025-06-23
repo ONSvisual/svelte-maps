@@ -1,20 +1,13 @@
 {
   "name": "@onsvisual/svelte-maps",
-  "version": "1.2.26",
+  "version": "1.2.27",
   "description": "Reusable map components for Svelte projects.",
   "homepage": "http://onsvisual.github.io/svelte-maps",
-  "module": "index.mjs",
-  "svelte": "index.mjs",
   "files": [
     "index.mjs",
     "src",
     "dist"
   ],
-  "exports": {
-    ".": {
-      "svelte": "./index.mjs"
-    }
-  },
   "scripts": {
     "build": "rollup -c rollup.config.build.js",
     "dev": "rollup -c rollup.config.dev.js -w",
@@ -56,5 +49,13 @@
     "maplibre-gl": "^3.3.1",
     "svelte": "3 - 5"
   },
-  "main": "index.mjs"
+  "main": "./index.mjs",
+  "module": "./index.mjs",
+  "svelte": "./index.mjs",
+	"exports": {
+		".": {
+			"svelte": "./index.mjs",
+			"default": "./index.mjs"
+		}
+	}
 }
